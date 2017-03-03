@@ -42,10 +42,49 @@ function operarCubo($cube,$operacion){
 
 function sumaInclusiva($cube,$x1,$y1,$z1,$x2,$y2,$z2){
 	$suma = (float)$cube[$x1][$y1][$z1];
-	for ($i=(float)$x1; $i < (float)$x2; $i++) { 
-		for ($j=(float)$y1; $j < (float)$y2; $j++) { 
-			for ($k=(float)$z1; $k < (float)$z2; $k++) { 
-					$suma = $suma + (float)$cube[$i+1][$j+1][$k+1];
+	if($x1==$x2){
+		if ($y1==$y2) {
+			if ($z1==$z2) {
+				return $suma;
+			} else{
+				for ($i=$z1+1; $i < $z2; $i++) { 
+					$suma = $suma + $cube[$x1][$y1][$i];				}
+			}
+		} elseif($z1==$z2){
+			for ($i=$y1+1; $i < $y2; $i++) { 
+					$suma = $suma + $cube[$x1][$i][$z1];
+			}
+		}
+		 else {
+			for ($i=$y1+1; $i < $y2; $i++) { 
+				for ($j=$z1+1; $j < $z2; $j++) { 
+					$suma = $suma + $cube[$x1][$i][$j];
+				}
+			}	
+		}
+	} elseif ($y1==$y2) {
+		 if ($z1==$z2) {
+				for ($i=$x1+1; $i < $x2; $i++) { 
+					$suma = $suma + $cube[$i][$y1][$z1];				}
+			} else {
+				for ($i=$x1+1; $i < $x2; $i++) { 
+					for ($j=$z1+1; $j < $z2; $j++) { 
+						$suma = $suma + $cube[$i][$y1][$j];
+					}
+				}
+			}
+	} elseif ($z1==$z2) {
+		for ($i=$x1+1; $i < $x2; $i++) { 
+					for ($j=$y1+1; $j < $y2; $j++) { 
+						$suma = $suma + $cube[$i][$j][$z1];
+					}
+				}
+	} else {
+		for ($i=(float)$x1+1; $i < (float)$x2; $i++) { 
+			for ($j=(float)$y1+1; $j < (float)$y2; $j++) { 
+				for ($k=(float)$z1+1; $k < (float)$z2; $k++) { 
+						$suma = $suma + (float)$cube[$i][$j][$k];
+				}
 			}
 		}
 	}
