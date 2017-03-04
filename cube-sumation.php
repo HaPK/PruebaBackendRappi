@@ -1,11 +1,11 @@
 <pre>
 <?php
 //Cube Sumation
-//dummy values
 /**
 * N = Tamaño del cubo
 * x,y,z = coordenada del elemento dentro del cubo
 * W = Elemento dentro de una de las coordenadas del cubo
+* x1,y1,z1,x2,y2,z2 = coordenadas del cubo para hacer la suma inclusiva
 * 
 * T = El número de pruebas
 * M = El número de operaciones
@@ -14,13 +14,34 @@
 
 readInput();
 
+function readInput(){
+	$gestor = @fopen("sample_input.txt", "r");
+	//$primeraLinea = false;
+	if ($gestor) {
+		$testcases = fgets($gestor);
+		//$primeraLinea = true;
+		for ($i=0; $i < $testcases ; $i++) {
+			$base = fgets($gestor);
+			list($N,$queries) = explode(" ", $base);
+			$cube = crearCubo($N);
+			$lineas = 0;
+			while ($lineas < $queries) {
+				//print_r($cube);
+				$operacion = fgets($gestor);
+				$cube = operarCubo($cube,$operacion);
+				$lineas++;
+			}
+		}
+		fclose($gestor);
+	}
+}
+
 function crearCubo($N){
 //crear el array de 3 dimensiones con los valores en 0
 	$cube=array_fill(1, $N, array_fill(1, $N, array_fill(1, $N, 0)));
 	return $cube;
 }
 
-//echo $cube[1][1][1]."<br>";
 function operarCubo($cube,$operacion){
 	$token = strtok($operacion, " ");
 	if (strcmp($token, "UPDATE") == 0) {
@@ -48,7 +69,8 @@ function sumaInclusiva($cube,$x1,$y1,$z1,$x2,$y2,$z2){
 				return $suma;
 			} else{
 				for ($i=$z1+1; $i < $z2; $i++) { 
-					$suma = $suma + $cube[$x1][$y1][$i];				}
+					$suma = $suma + $cube[$x1][$y1][$i];				
+				}
 			}
 		} elseif($z1==$z2){
 			for ($i=$y1+1; $i < $y2; $i++) { 
@@ -65,7 +87,8 @@ function sumaInclusiva($cube,$x1,$y1,$z1,$x2,$y2,$z2){
 	} elseif ($y1==$y2) {
 		 if ($z1==$z2) {
 				for ($i=$x1+1; $i < $x2; $i++) { 
-					$suma = $suma + $cube[$i][$y1][$z1];				}
+					$suma = $suma + $cube[$i][$y1][$z1];				
+				}
 			} else {
 				for ($i=$x1+1; $i < $x2; $i++) { 
 					for ($j=$z1+1; $j < $z2; $j++) { 
@@ -91,27 +114,6 @@ function sumaInclusiva($cube,$x1,$y1,$z1,$x2,$y2,$z2){
 	return $suma;
 }
 
-function readInput(){
-	$gestor = @fopen("sample_input.txt", "r");
-	//$primeraLinea = false;
-	if ($gestor) {
-		$testcases = fgets($gestor);
-		//$primeraLinea = true;
-		for ($i=0; $i < $testcases ; $i++) {
-			$base = fgets($gestor);
-			list($N,$queries) = explode(" ", $base);
-			$cube = crearCubo($N);
-			$lineas = 0;
-			while ($lineas < $queries) {
-				//print_r($cube);
-				$operacion = fgets($gestor);
-				$cube = operarCubo($cube,$operacion);
-				$lineas++;
-			}
-		}
-		fclose($gestor);
-	}
-}
 
 function mostrarResultado($result){
 	echo $result."<br>";
